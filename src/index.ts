@@ -5,8 +5,9 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
-import typeDefs from "./graphql/typeDefs/typeDefs";
-import resolvers from "./graphql/resolvers/resolvers";
+
+import typeDefs from "./graphql/typeDefs";
+import resolvers from "./graphql/resolvers";
 
 async function main() {
   const app = express();
