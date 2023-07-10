@@ -1,0 +1,5 @@
+disabled: #C0C0C0
+
+my favorite: "#304352", "#d7d2cc"
+
+dark-mode: #232526 - #414345
