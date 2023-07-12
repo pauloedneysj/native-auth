@@ -3,45 +3,33 @@ import gql from "graphql-tag";
 export default gql`
   type User {
     id: String
-    name: String
-    username: String
+    firstName: String
+    lastName: String
     email: String
-    emailVerified: Boolean
-    image: String
   }
 
-  type SearchedUser {
-    id: String
-    username: String
+  type Mutation {
+    signUp(
+      firstName: String!
+      lastName: String!
+      email: String!
+      password: String!
+    ): SignUpResponse
   }
 
-  type LoginResponse {
-    accessToken: String
-    refreshToken: String
+  type SignUpResponse {
+    token: String
   }
 
-  type CreateUsernameResponse {
-    success: Boolean
+  type Mutation {
+    signIn(email: String!, password: String!): SignInResponse
   }
 
-  type RefreshTokenResponse {
-    accessToken: String
-    refreshToken: String
+  type SignInResponse {
+    token: String
   }
 
   type Query {
-    searchUsers(username: String): [SearchedUser]
-  }
-
-  type Mutation {
-    login(userId: ID): LoginResponse
-  }
-
-  type Mutation {
-    createUsername(username: String): CreateUsernameResponse
-  }
-
-  type Mutation {
-    refreshToken(refreshTokenId: ID): RefreshTokenResponse
+    me: User
   }
 `;
