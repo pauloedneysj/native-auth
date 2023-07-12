@@ -1,4 +1,4 @@
-package com.pauloedney.authapp;
+package com.pauloedney.nativeauthapp;
 
 import android.app.Application;
 import android.content.res.Configuration;

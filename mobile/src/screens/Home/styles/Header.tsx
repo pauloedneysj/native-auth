@@ -33,12 +33,23 @@ const WelcomeText = styled.Text`
   color: black;
 `;
 
-export default function HomeHeader() {
+interface HomeHeaderProps {
+  me:
+    | {
+        id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+      }
+    | undefined;
+}
+
+export default function HomeHeader({ me }: HomeHeaderProps) {
   return (
     <HeaderWrapper>
       <Title>NativeAuth</Title>
       <Subtitle>How to i get started lorem ipsum dolor at?</Subtitle>
-      <WelcomeText>{`Parabéns ${"<user>"}, você foi autenticado com sucesso.`}</WelcomeText>
+      <WelcomeText>{`Parabéns ${me?.firstName}, você foi autenticado com sucesso.`}</WelcomeText>
     </HeaderWrapper>
   );
 }

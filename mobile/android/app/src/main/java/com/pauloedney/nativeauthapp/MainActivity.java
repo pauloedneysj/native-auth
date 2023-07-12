@@ -1,4 +1,4 @@
-package com.pauloedney.authapp;
+package com.pauloedney.nativeauthapp;
 
 import android.os.Build;
 import android.os.Bundle;

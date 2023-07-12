@@ -8,7 +8,7 @@ interface HeaderProps {
 const HeaderWrapper = styled.View<{ isKeyboardOpen: boolean }>`
   flex-direction: column;
   align-items: center;
-  margin: ${(props) => (props.isKeyboardOpen ? "25% 0 20% 0" : "25% 0 40% 0")};
+  margin: ${(props) => (props.isKeyboardOpen ? "10% 0 8% 0" : "25% 0 20% 0")};
 `;
 
 const Title = styled.Text`
@@ -19,19 +19,10 @@ const Title = styled.Text`
   font-weight: 700;
 `;
 
-const Subtitle = styled.Text`
-  color: #525252;
-  font-family: Poppins;
-  font-size: ${getFontSize(16)}px;
-  font-style: normal;
-  font-weight: 400;
-`;
-
 export default function SignInHeader({ isKeyboardOpen }: HeaderProps) {
   return (
     <HeaderWrapper isKeyboardOpen={isKeyboardOpen}>
-      <Title>NativeAuth</Title>
-      <Subtitle>How to i get started lorem ipsum dolor at?</Subtitle>
+      <Title>Cadastro</Title>
     </HeaderWrapper>
   );
 }

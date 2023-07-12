@@ -5,54 +5,47 @@ import useKeyboardDetect from "../../hooks/useKeyboardDetect";
 import BackgroundLinearGradient from "../../components/common/BackgroundLinearGradient";
 import SignInHeader from "./styles/Header";
 import SignInInput from "./styles/Input";
-
+import AuthButtons from "./styles/Button";
 import SignInModal from "./styles/Modal";
-import Footer from "./styles/Footer";
 import { storage } from "../../utils/functions";
 import { useNavigation } from "@react-navigation/native";
 import { useScreenGuard } from "../../hooks/useScreenGuard";
 import { useMutation } from "@apollo/client";
 import UserOperations from "../../graphql/operations/user";
-import { SignInData, SignInVariables } from "../../utils/types";
-import SignInButton from "./styles/Button";
+import { SignUpData, SignUpVariables } from "../../utils/types";
 
 const Container = styled.View`
   flex: 1;
-  flex-direction: column;
   align-items: center;
 `;
 
-export default function SignIn() {
+export default function SignUp() {
   const { navigate } = useNavigation();
 
   const isKeyboardOpen = useKeyboardDetect();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [signIn, { loading }] = useMutation<SignInData, SignInVariables>(
-    UserOperations.Mutations.signIn,
+  const [signUp, { loading }] = useMutation<SignUpData, SignUpVariables>(
+    UserOperations.Mutations.signUp,
     {
-      onCompleted: async ({ signIn: { token } }) => {
+      onCompleted: async ({ signUp: { token } }) => {
         storage.set("token", token);
         await handleAuthenticated();
       },
       onError: ({ message }) => {
         console.log(message);
       },
-      awaitRefetchQueries: true,
     }
   );
 
-  async function handleSignIn() {
-    const tokenAlreadyExists = storage.contains("token");
-
-    if (!tokenAlreadyExists) {
-      await signIn({ variables: { email, password } });
-    } else {
-      await handleAuthenticated();
-    }
+  async function handleSignUp() {
+    await signUp({ variables: { email, firstName, lastName, password } });
   }
 
   async function handleAuthenticated() {
@@ -79,6 +72,16 @@ export default function SignIn() {
       <Container>
         <SignInHeader isKeyboardOpen={isKeyboardOpen} />
         <SignInInput
+          placeholder="Nome"
+          isKeyboardOpen={isKeyboardOpen}
+          onChangeText={setFirstName}
+        />
+        <SignInInput
+          placeholder="Sobrenome"
+          isKeyboardOpen={isKeyboardOpen}
+          onChangeText={setLastName}
+        />
+        <SignInInput
           placeholder="E-mail"
           isKeyboardOpen={isKeyboardOpen}
           onChangeText={setEmail}
@@ -96,8 +99,7 @@ export default function SignIn() {
         />
         {!isKeyboardOpen && (
           <>
-            <SignInButton onSignIn={handleSignIn} isLoading={loading} />
-            <Footer />
+            <AuthButtons onSignIn={handleSignUp} isLoading={loading} />
           </>
         )}
       </Container>

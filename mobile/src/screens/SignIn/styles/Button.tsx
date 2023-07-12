@@ -1,80 +1,48 @@
 import { styled } from "styled-components/native";
 import { ActivityIndicator } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import { getFontSize } from "../../../utils/functions";
+import { getFontSize, storage } from "../../../utils/functions";
 
 interface AuthButtonsProps {
   onSignIn: () => void;
-  toRegister: () => void;
-  toRecoveryPassword: () => void;
   isLoading: boolean;
 }
 
-const Container = styled.View`
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 20%;
-  margin: 4% 0 4% 0;
-`;
-
-const RecoveryPasswordText = styled.Text`
-  margin-bottom: 2.5%;
-  font-family: Poppins;
-  font-size: ${getFontSize(14)}px;
-  font-style: normal;
-  font-weight: 700;
-  color: #696969;
-`;
-
-const SignInButton = styled.TouchableOpacity`
+const Button = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
-  width: 50%;
-  height: 50%;
-  margin-bottom: 2.5%;
+  width: 90%;
+  height: 10%;
   border-radius: 16px;
   opacity: 0.8;
   background-color: #55c2da;
+  margin-bottom: 8%;
 `;
 
-const SignInButtonText = styled.Text`
+const ButtonText = styled.Text`
   font-family: Poppins;
   font-size: ${getFontSize(17)}px;
   font-style: normal;
   font-weight: 700;
-  color: #f8f8fa;
+  color: #0e1111;
 `;
 
-const SignUpText = styled.Text`
-  font-family: Poppins;
-  font-size: ${getFontSize(14)}px;
-  font-style: normal;
-  font-weight: 700;
-  color: #696969;
-`;
-
-export default function AuthButtons({
+export default function SignInButton({
   onSignIn,
-  toRegister,
-  toRecoveryPassword,
   isLoading,
 }: AuthButtonsProps) {
+  const isBiometricActive = storage.getBoolean("is-biometric-active");
+
   return (
-    <Container>
-      <RecoveryPasswordText onPress={toRecoveryPassword}>
-        Esqueceu sua senha?
-      </RecoveryPasswordText>
-      <SignInButton onPress={onSignIn} activeOpacity={0.7}>
-        {isLoading ? (
-          <ActivityIndicator />
-        ) : (
-          <SignInButtonText>Entrar</SignInButtonText>
-        )}
-      </SignInButton>
-      <SignUpText onPress={toRegister}>
-        Ainda não possui conta, aperte aqui!
-      </SignUpText>
-    </Container>
+    <Button onPress={onSignIn} activeOpacity={0.7}>
+      {isLoading ? (
+        <ActivityIndicator color="#0e1111" />
+      ) : isBiometricActive ? (
+        <Ionicons name="finger-print-outline" size={36} color="#0e1111" />
+      ) : (
+        <ButtonText>Entrar</ButtonText>
+      )}
+    </Button>
   );
 }

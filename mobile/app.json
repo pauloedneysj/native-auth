@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.pauloedney.native-auth-app"
+      "package": "com.pauloedney.nativeauthapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

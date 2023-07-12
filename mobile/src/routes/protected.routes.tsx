@@ -6,14 +6,13 @@ import AuthRoutes from "./auth.routes";
 
 export default function ProtectedRoutes() {
   const { navigate } = useNavigation();
-
-  const sessionToken = storage.getString("session-token");
+  const tokenAlreadyExists = storage.contains("token");
 
   useEffect(() => {
-    if (!sessionToken) {
+    if (!tokenAlreadyExists) {
       navigate("SignIn");
     }
   });
 
-  return <>{sessionToken && <AuthRoutes />}</>;
+  return <>{tokenAlreadyExists && <AuthRoutes />}</>;
 }

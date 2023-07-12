@@ -4,17 +4,17 @@ import { useEffect } from "react";
 
 import { storage } from "../utils/functions";
 import SignIn from "../screens/SignIn";
+import SignUp from "../screens/SignUp";
 import ProtectedRoutes from "./protected.routes";
 
 export default function StackRoutes() {
   const Stack = createNativeStackNavigator();
   const { navigate } = useNavigation();
-
-  const sessionToken = storage.getString("session-token");
+  const tokenAlreadyExists = storage.contains("token");
 
   useEffect(() => {
-    if (sessionToken) {
-      navigate("AuthRoutes");
+    if (tokenAlreadyExists) {
+      navigate("ProtectedRoutes");
     }
   });
 
@@ -25,7 +25,8 @@ export default function StackRoutes() {
       }}
     >
       <Stack.Screen name="SignIn" component={SignIn} />
-      <Stack.Screen name="AuthRoutes" component={ProtectedRoutes} />
+      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="ProtectedRoutes" component={ProtectedRoutes} />
     </Stack.Navigator>
   );
 }
