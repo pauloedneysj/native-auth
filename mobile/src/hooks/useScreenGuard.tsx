@@ -12,22 +12,6 @@ export async function useScreenGuard() {
     storage.set("screen-guard-success", true);
   } else {
     storage.set("screen-guard-success", false);
-    await useScreenGuard();
+    storage.delete("token");
   }
 }
-
-// export async function useBiometricExistsValue() {
-//   const compatible = await LocalAuthentication.hasHardwareAsync();
-
-//   if (!compatible) {
-//     return null;
-//   }
-
-//   const enrolled = await LocalAuthentication.isEnrolledAsync();
-
-//   if (!enrolled) {
-//     return null;
-//   }
-
-//   storage.set("is-biometric-available", true);
-// }

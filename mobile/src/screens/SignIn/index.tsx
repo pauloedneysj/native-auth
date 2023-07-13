@@ -15,11 +15,12 @@ import { useMutation } from "@apollo/client";
 import UserOperations from "../../graphql/operations/user";
 import { SignInData, SignInVariables } from "../../utils/types";
 import SignInButton from "./styles/Button";
+import { useBiometricAvailable } from "../../hooks/useBiometricAvalaible";
 
 const Container = styled.View`
   flex: 1;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 
 export default function SignIn() {
@@ -56,11 +57,14 @@ export default function SignIn() {
   }
 
   async function handleAuthenticated() {
+    const isBiometricAvalaible = await useBiometricAvailable();
     const isBiometricActive = storage.getBoolean("is-biometric-active");
 
-    if (isBiometricActive == undefined) {
+    if (!isBiometricAvalaible) {
+      navigate("ProtectedRoutes");
+    } else if (isBiometricActive == undefined) {
       setModalVisible(true);
-    } else if (!!isBiometricActive) {
+    } else if (isBiometricActive) {
       storage.delete("screen-guard-status");
       await useScreenGuard();
     } else if (!isBiometricActive) {
@@ -69,7 +73,7 @@ export default function SignIn() {
 
     const screenGuardSuccess = storage.getBoolean("screen-guard-success");
 
-    if (!!screenGuardSuccess) {
+    if (screenGuardSuccess) {
       navigate("ProtectedRoutes");
     }
   }
@@ -89,6 +93,7 @@ export default function SignIn() {
           isKeyboardOpen={isKeyboardOpen}
           onChangeText={setPassword}
         />
+        <SignInButton onSignIn={handleSignIn} isLoading={loading} />
         <SignInModal
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
@@ -96,7 +101,6 @@ export default function SignIn() {
         />
         {!isKeyboardOpen && (
           <>
-            <SignInButton onSignIn={handleSignIn} isLoading={loading} />
             <Footer />
           </>
         )}

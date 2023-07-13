@@ -8,7 +8,7 @@ interface HeaderProps {
 const HeaderWrapper = styled.View<{ isKeyboardOpen: boolean }>`
   flex-direction: column;
   align-items: center;
-  margin: ${(props) => (props.isKeyboardOpen ? "25% 0 20% 0" : "25% 0 40% 0")};
+  margin: ${(props) => (props.isKeyboardOpen ? "10% 0 10% 0" : "20% 0 25% 0")};
 `;
 
 const Title = styled.Text`

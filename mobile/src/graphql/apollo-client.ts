@@ -1,21 +1,27 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
-
+import { setContext } from "@apollo/client/link/context";
 import { storage } from "../utils/functions";
 
-export default function apolloClient() {
+const httpLink = createHttpLink({
+  uri: "http://192.168.0.135:4000/graphql",
+});
+
+const authLink = setContext((_, { headers }) => {
   const token = storage.getString("token");
 
-  const link = createHttpLink({
-    uri: "http://192.168.0.135:4000/graphql",
+  return {
     headers: {
+      ...headers,
       authorization: token ? `Bearer ${token}` : "",
     },
-  });
+  };
+});
 
-  const cache = new InMemoryCache();
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+  name: "NativeAuth",
+  version: "1.0",
+});
 
-  return new ApolloClient({
-    link,
-    cache,
-  });
-}
+export default client;
